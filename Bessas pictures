@@ -132,11 +132,11 @@ if dice_roll==6
     if isempty(cards)==0
         card_drawn=cards(randi([1,length(cards)]));
         if card_drawn==1
-           destroy_possession=0;
+           destroy_possession=1;
         end
     
         if card_drawn==2
-            knock_back_possession=0;
+            knock_back_possession=1;
         end
         if card_drawn==3
             if pic1<0 && r_check==0
