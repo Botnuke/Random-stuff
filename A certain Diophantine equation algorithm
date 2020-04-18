@@ -1,0 +1,58 @@
+%This algorithm produces all positive integer solution pairs for 
+%m/a + n/b = c/d, given any positive integers m,n,c,d
+%Solution pairs are outputted with order (a,b)
+%If m=n, then consider marking particular solution (a',b') the same
+%as the symmetric solution (b',a') for conciseness 
+%You may also enable negative solutions
+
+%Change these
+m=2;
+n=3;
+c=1;
+d=163;  
+IncludePos=1;    %1 for yes positive solutions, 0 for no
+IncludeNeg=1;    %1 for yes negative solutions, 0 for no
+OmitSymmetry=1;  % 1 for yes to omit, 0 for no 
+                 % Does nothing if M~=N
+
+%The algorithm begins here, no more changes are needed
+D=d^2*m*n;
+
+K = 1:ceil(sqrt(D));        %generating list of factors
+Factors = K(rem(D,K)==0);
+Factors = transpose([Factors sort(D./Factors)]);
+Factors = transpose(unique(Factors,'rows'));
+if OmitSymmetry==1 && m==n
+L=ceil(length(Factors)/2);
+Factors=Factors(1:L);
+end
+disp(['Solving Diophantine equation: ',num2str(m),'/a + ',...
+    num2str(n),'/b = ',num2str(c),'/',num2str(d)])
+if IncludePos==1
+disp('Solutions from positive factors:')
+for i=Factors
+    P1=i;        %Sets P1 equal to a factor, P2 is the pair
+    P2=D/P1;
+    P11=m*d+P1;
+    P22=n*d+P2;
+if mod(P11,c)==0 && mod(P22,c)==0 %Check congruence satisfaction
+    X=['(',num2str(P11/c),',',num2str(P22/c),')'];
+   disp(X)
+end
+end
+end
+
+if IncludeNeg==1
+disp('Negative solutions from negative factors:')
+for i=Factors
+    P1=-i;       
+    P2=D/P1;
+    P11=(d*m)+P1;
+    P22=(d*n)+P2;
+if mod(P11,c)==0 && mod(P22,c)==0 && P11~=0 && P22~=0
+    X=['(',num2str(P11/c),',',num2str(P22/c),')'];
+   disp(X)
+end
+end
+end
+
